@@ -22,7 +22,17 @@ A sleek, self-hosted audiobook generator powered by the [Orpheus TTS](https://gi
 
 - Download and install [LM Studio](https://lmstudio.ai/)
 - In LM Studio, download the model: `orpheus-3b-0.1-ft-q4_k_m.gguf`
-- Load and run the model with the local server enabled (default: `http://127.0.0.1:1234`)
+- Load and run the model with the local server enabled
+
+📌 **Note**: LM Studio runs on a local IP address.  
+You will need to update the API URL in `lmstudio_api.py` to match what LM Studio shows (e.g., `http://127.0.0.1:1234` or another `169.254.x.x:1234` address):
+
+```python
+# Inside lmstudio_api.py
+API_URL = "http://127.0.0.1:1234/v1/completions"
+```
+
+---
 
 ### 2. Clone this repository
 
@@ -31,11 +41,11 @@ git clone https://github.com/yujikaido/Orpheus-Audiobook-Creator.git
 cd Orpheus-Audiobook-Creator
 ```
 
-### 3. Set up Python environment
+### 3. Create and activate the Conda environment
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+conda create -n orpheus python=3.11
+conda activate orpheus
 pip install -r requirements.txt
 ```
 
@@ -43,8 +53,10 @@ pip install -r requirements.txt
 
 ## ▶️ Run the App
 
+Run the included batch script:
+
 ```bash
-python main.py
+audiobookmaker.bat
 ```
 
 Then open your browser to:
