@@ -9,7 +9,7 @@ Well, it makes audiobooks... when it feels like it. Work in progress! 😅🎧
 ## ✨ Features
 
 - 🎤 High-quality voice generation using [Orpheus TTS](https://github.com/canopyai/Orpheus-TTS)
-- 💻 100% local — no internet or API keys required
+- 💻 100% local — no internet 
 - 🔊 Multiple voice options: `tara`, `jess`, `leo`, `leah`, `dan`, `mia`, `zac`, `zoe`
 - 🎵 MP3 output with a single click
 - 🧠 Built-in voice preview feature
