@@ -78,7 +78,8 @@ Click the "🔊 Preview Voice" button to hear the selected voice say:
 ## 📁 Output Files
 
 - Temporary `.wav` files are stored in `static/temp_chunks`
-- Final `.mp3` files are saved in the `output/` folder
+- Final `.mp3` files are saved in the `output/` folder or where you want after clicking download
+  in the UI you can select a location and name the file.
 
 ---
 
