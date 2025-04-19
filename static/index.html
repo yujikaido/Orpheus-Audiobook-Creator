@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎧 Orpheus Audiobook Generator by Luke</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: #222;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2196f3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            margin-bottom: 10px;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #000;
+            font-size: 1rem;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 20px;
+            display: block;
+        }
+        button {
+            padding: 12px 20px;
+            margin-top: 10px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-blue { background-color: #2196f3; }
+        .btn-green { background-color: #4caf50; }
+        .btn-orange { background-color: #ff9800; }
+        button:hover {
+            opacity: 0.9;
+        }
+        #finalPlayer {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+        #chunkProgressBar {
+            height: 12px;
+            border-radius: 8px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🎧 Orpheus Audiobook Creator</h1>
+    <p>By Luke</p>
+</header>
+<div class="container">
+    <label for="text">Text Input:</label>
+    <textarea id="text" rows="6" placeholder="Paste your audiobook script here..."></textarea>
+
+    <label for="voice">Choose a Voice:</label>
+    <select id="voice">
+        <option value="tara">Tara</option>
+        <option value="jess">Jess</option>
+        <option value="leo">Leo</option>
+        <option value="leah">Leah</option>
+        <option value="dan">Dan</option>
+        <option value="mia">Mia</option>
+        <option value="zac">Zac</option>
+        <option value="zoe">Zoe</option>
+    </select>
+
+    <label for="title">File Name:</label>
+    <input type="text" id="title" value="audiobook">
+
+    <button id="generateBtn" class="btn-blue">🎙️ Generate Audiobook</button>
+    <button id="previewBtn" class="btn-orange">🔊 Preview Voice</button>
+    <div id="wordCount">Word Count: 0</div>
+    <div id="status">Idle</div>
+    <div id="chunkProgressText" style="margin-top: 10px;"></div>
+    <progress id="chunkProgressBar" value="0" max="100" style="width:100%; display:none;"></progress>
+
+    <audio id="finalPlayer" controls style="display:none;"></audio>
+    <button id="downloadBtn" class="btn-green" style="display:none;">⬇️ Download MP3</button>
+</div>
+<footer>
+    &copy; 2025 Luke's Audiobook Studio • Powered by Orpheus TTS
+</footer>
+
+<script>
+    const textArea = document.getElementById('text');
+    const status = document.getElementById('status');
+    const wordCountEl = document.getElementById('wordCount');
+    const finalizePlayer = document.getElementById('finalPlayer');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const previewBtn = document.getElementById('previewBtn');
+    const chunkProgressText = document.getElementById('chunkProgressText');
+    const chunkProgressBar = document.getElementById('chunkProgressBar');
+
+    textArea.addEventListener('input', () => {
+        const words = textArea.value.trim().split(/\s+/);
+        wordCountEl.textContent = `Word Count: ${words.length}`;
+    });
+
+    let currentSession = null;
+
+    generateBtn.addEventListener('click', async () => {
+        const session_id = crypto.randomUUID();
+        currentSession = session_id;
+        const formData = new FormData();
+        formData.append("text", textArea.value);
+        formData.append("voice", document.getElementById("voice").value);
+        formData.append("title", document.getElementById("title").value);
+        formData.append("session_id", session_id);
+
+        status.innerText = 'Generating...';
+        chunkProgressText.textContent = "Processing...";
+        chunkProgressBar.style.display = 'block';
+        chunkProgressBar.value = 0;
+
+        const response = await fetch("/generate-audiobook/", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            chunkProgressBar.value = 50;
+            chunkProgressText.textContent = "Finalizing MP3...";
+
+            const finalizeRes = await fetch(`/finalize/${currentSession}`);
+            if (finalizeRes.ok) {
+                const blob = await finalizeRes.blob();
+                const url = URL.createObjectURL(blob);
+
+                finalizePlayer.src = url;
+                finalizePlayer.style.display = 'block';
+                finalizePlayer.load();
+
+                downloadBtn.onclick = () => {
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = document.getElementById("title").value + ".mp3";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                };
+                downloadBtn.style.display = 'inline-block';
+
+                chunkProgressBar.value = 100;
+                chunkProgressText.textContent = "✅ Audiobook ready!";
+                status.innerText = "✅ Completed";
+            } else {
+                status.innerText = "❌ Finalization failed.";
+            }
+        } else {
+            status.innerText = "❌ Generation failed.";
+        }
+    });
+
+    previewBtn.addEventListener('click', async () => {
+        const session_id = crypto.randomUUID();
+        const formData = new FormData();
+        formData.append("text", "This is what my voice sounds like, is it good enough for your audiobook?");
+        formData.append("voice", document.getElementById("voice").value);
+        formData.append("title", "preview");
+        formData.append("session_id", session_id);
+
+        status.innerText = "Generating voice preview...";
+
+        const response = await fetch("/generate-audiobook/", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            const finalizeRes = await fetch(`/finalize/${session_id}`);
+            if (finalizeRes.ok) {
+                const blob = await finalizeRes.blob();
+                const url = URL.createObjectURL(blob);
+
+                finalizePlayer.src = url;
+                finalizePlayer.style.display = 'block';
+                finalizePlayer.load();
+                finalizePlayer.play();
+
+                status.innerText = "✅ Voice preview ready!";
+            } else {
+                status.innerText = "❌ Preview finalization failed.";
+            }
+        } else {
+            status.innerText = "❌ Preview generation failed.";
+        }
+    });
+</script>
+</body>
+</html>
