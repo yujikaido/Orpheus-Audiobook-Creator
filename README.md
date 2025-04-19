@@ -14,6 +14,7 @@ Well, it makes audiobooks... when it feels like it. Work in progress! 😅🎧
 - 🎵 MP3 output with a single click
 - 🧠 Built-in voice preview feature
 - 🧰 Clean, modern UI with progress tracking(WIP see console window for progress updates)
+  
 
 ---
 
@@ -90,6 +91,7 @@ Click the "🔊 Preview Voice" button to hear the selected voice say:
 
 - Created by [Luke](https://github.com/yujikaido)
 - Powered by [Orpheus TTS](https://github.com/canopyai/Orpheus-TTS) from Canopy AI
+- I run it on a 4070 Super 12gb vram
 
 ---
 
