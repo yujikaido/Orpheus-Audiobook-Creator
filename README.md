@@ -37,26 +37,28 @@ API_URL = "http://127.0.0.1:1234/v1/completions"
 
 ### 2. Clone this repository
 
-```bash
+```
+Open a command window where you want the folder to be created then>
 git clone https://github.com/yujikaido/Orpheus-Audiobook-Creator.git
 cd Orpheus-Audiobook-Creator
 ```
 
 ### 3. Create and activate the Conda environment
 
-```bash
 conda create -n orpheus python=3.11
 conda activate orpheus
 pip install -r requirements.txt
 ```
-
+pip install nltk
+python -m nltk.downloader punkt
+You can then close the window and run the bat file below.
 ---
 
 ## ▶️ Run the App
 
 Run the included batch script:
 
-```bash
+```
 audiobookmaker.bat
 ```
 
