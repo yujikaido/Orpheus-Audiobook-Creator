@@ -13,7 +13,7 @@ Well, it makes audiobooks... when it feels like it. Work in progress! 😅🎧
 - 🔊 Multiple voice options: `tara`, `jess`, `leo`, `leah`, `dan`, `mia`, `zac`, `zoe`
 - 🎵 MP3 output with a single click
 - 🧠 Built-in voice preview feature
-- 🧰 Clean, modern UI with progress tracking
+- 🧰 Clean, modern UI with progress tracking(WIP see console window for most updates)
 
 ---
 
