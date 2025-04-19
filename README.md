@@ -1,7 +1,7 @@
 
 # 🎧 Orpheus Audiobook Creator by Luke
 
-A sleek, self-hosted audiobook generator powered by the [Orpheus TTS](https://github.com/canopyai/Orpheus-TTS) model and LM Studio — designed for creators who want a fast and simple way to convert text into beautifully narrated MP3s. 
+A simple sleek, self-hosted audiobook generator powered by the [Orpheus TTS](https://github.com/canopyai/Orpheus-TTS) model and LM Studio — designed for creators who want a fast and simple way to convert text into beautifully narrated MP3s. 
 Well, it makes audiobooks... when it feels like it. Work in progress! 😅🎧
 
 ---
